@@ -1,100 +1,20 @@
 {
-    "versionLabel": "1.1",
-    "uuid": "29de155f-0cfd-42a0-8d11-f7331ecc04c1",
     "appKeys": {},
-    "longName": "Marvin",
-    "versionCode": 2,
     "capabilities": [
         ""
     ],
-    "shortName": "Marvin",
     "companyName": "antonio_asaro",
-    "watchapp": {
-        "watchface": true
-    },
+    "longName": "ANTONIO-MARVIN_2.0.COLOUR",
+    "projectType": "native",
     "resources": {
-        "media": [
-            {
-                "menuIcon": true,
-                "type": "png",
-                "name": "IMAGE_ICON",
-                "file": "images/Marvin_icon.png"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_EXPLOSION",
-                "file": "images/Explosion.png"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_MARVIN04",
-                "file": "images/Marvin04.png"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_MARVIN03",
-                "file": "images/Marvin03.png"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_MARVIN02",
-                "file": "images/Marvin02.png"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_MARVIN01",
-                "file": "images/Marvin01.png"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_BOLT",
-                "file": "images/Bolt.png"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_MARS",
-                "file": "images/Mars.png"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_FLAG",
-                "file": "images/Flag.png"
-            },
-            {
-                "type": "font",
-                "name": "FONT_HANDSEAN_18",
-                "file": "fonts/handsean.ttf"
-            },
-            {
-                "type": "font",
-                "name": "FONT_HANDSEAN_16",
-                "file": "fonts/handsean.ttf"
-            },
-            {
-                "type": "font",
-                "name": "FONT_HANDSEAN_14",
-                "file": "fonts/handsean.ttf"
-            },
-            {
-                "type": "font",
-                "name": "FONT_HANDSEAN_12",
-                "file": "fonts/handsean.ttf"
-            },
-            {
-                "type": "font",
-                "name": "FONT_HANDSEAN_10",
-                "file": "fonts/handsean.ttf"
-            },
-            {
-                "type": "font",
-                "name": "FONT_HANDSEAN_8",
-                "file": "fonts/handsean.ttf"
-            },
-            {
-                "type": "png",
-                "name": "IMAGE_EARTH",
-                "file": "images/Earth.png"
-            }
-        ]
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "ANTONIO-MARVIN_2.0.COLOUR",
+    "uuid": "5be48544-b876-48c2-bd53-bec519358d77",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
     }
 }
