@@ -7,7 +7,13 @@
     "longName": "ANTONIO-MARVIN_2.0.COLOUR",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/Flag.png",
+                "name": "IMAGE_FLAG",
+                "type": "png"
+            }
+        ]
     },
     "sdkVersion": "3",
     "shortName": "ANTONIO-MARVIN_2.0.COLOUR",
