@@ -9,6 +9,11 @@
     "resources": {
         "media": [
             {
+                "file": "images/marvin01.png",
+                "name": "IMAGE_MARVIN01",
+                "type": "png"
+            },
+            {
                 "file": "images/Flag.png",
                 "name": "IMAGE_FLAG",
                 "type": "png"
