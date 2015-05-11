@@ -9,6 +9,41 @@
     "resources": {
         "media": [
             {
+                "file": "images/Mars.png",
+                "name": "IMAGE_MARS",
+                "type": "png"
+            },
+            {
+                "file": "fonts/handsean.ttf",
+                "name": "FONT_HANDSEAN_8",
+                "type": "font"
+            },
+            {
+                "file": "fonts/handsean.ttf",
+                "name": "FONT_HANDSEAN_10",
+                "type": "font"
+            },
+            {
+                "file": "fonts/handsean.ttf",
+                "name": "FONT_HANDSEAN_12",
+                "type": "font"
+            },
+            {
+                "file": "fonts/handsean.ttf",
+                "name": "FONT_HANDSEAN_14",
+                "type": "font"
+            },
+            {
+                "file": "fonts/handsean.ttf",
+                "name": "FONT_HANDSEAN_16",
+                "type": "font"
+            },
+            {
+                "file": "fonts/handsean.ttf",
+                "name": "FONT_HANDSEAN_18",
+                "type": "font"
+            },
+            {
                 "file": "images/Earth.png",
                 "name": "IMAGE_EARTH",
                 "type": "png"
@@ -26,11 +61,6 @@
             {
                 "file": "images/marvin02.png",
                 "name": "IMAGE_MARVIN02",
-                "type": "png"
-            },
-            {
-                "file": "images/Mars.png",
-                "name": "IMAGE_MARS",
                 "type": "png"
             },
             {
