@@ -9,6 +9,41 @@
     "resources": {
         "media": [
             {
+                "file": "images/Earth.png",
+                "name": "IMAGE_EARTH",
+                "type": "png"
+            },
+            {
+                "file": "images/marvin04.png",
+                "name": "IMAGE_MARVIN04",
+                "type": "png"
+            },
+            {
+                "file": "images/marvin03.png",
+                "name": "IMAGE_MARVIN03",
+                "type": "png"
+            },
+            {
+                "file": "images/marvin02.png",
+                "name": "IMAGE_MARVIN02",
+                "type": "png"
+            },
+            {
+                "file": "images/Mars.png",
+                "name": "IMAGE_MARS",
+                "type": "png"
+            },
+            {
+                "file": "images/Explosion.png",
+                "name": "IMAGE_EXPLOSION",
+                "type": "png"
+            },
+            {
+                "file": "images/Bolt.png",
+                "name": "IMAGE_BOLT",
+                "type": "png"
+            },
+            {
                 "file": "images/marvin01.png",
                 "name": "IMAGE_MARVIN01",
                 "type": "png"
@@ -22,8 +57,10 @@
     },
     "sdkVersion": "3",
     "shortName": "ANTONIO-MARVIN_2.0.COLOUR",
+    "targetPlatforms": [
+        "basalt"
+    ],
     "uuid": "5be48544-b876-48c2-bd53-bec519358d77",
-    "versionCode": 1,
     "versionLabel": "1.0",
     "watchapp": {
         "watchface": false
