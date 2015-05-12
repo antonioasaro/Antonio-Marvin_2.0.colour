@@ -27,7 +27,8 @@
 #define FRAME10 GRect(51,  70,  17, 17)  
 #define FRAME11 GRect(75,  55,  17, 17) 
 #define FRAME12 GRect(80,  28,  17, 17)     		// anchor
-#define EXPLOSION_FRAME GRect(0,  -20,  140, 100)   	
+#define EXPLOSION_FRAME GRect(80,  28,  17, 17)   	
+//#define EXPLOSION_FRAME GRect(0,  -20,  140, 100)   	
 #define LASTFRAME FRAME12
 #define LASTINDEX 12-1
 #define BOLT_ANIMATION_DURATION 1500
@@ -196,15 +197,15 @@ void clear_all()
 void setup_gbitmap()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_gbitmap");
-	marvin01_image  = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN01);
-	marvin02_image  = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN02);
-	marvin03_image  = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN03);
-	marvin04_image  = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN04);
-	bolt_image      = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BOLT);
-	explosion_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXPLOSION);
-	earth_image     = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EARTH);
-	flag_image      = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_FLAG);
-	mars_image      = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARS);
+	marvin01_image    = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN01);
+	marvin02_image    = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN02);
+	marvin03_image    = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN03);
+	marvin04_image    = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN04);
+	bolt_image        = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BOLT);
+	earth_image       = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EARTH);
+	flag_image        = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_FLAG);
+	mars_image        = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARS);
+	explosion_image   = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXPLOSION);
 }
 
 void setup_bolt()

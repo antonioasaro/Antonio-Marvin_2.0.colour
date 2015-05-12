@@ -9,13 +9,23 @@
     "resources": {
         "media": [
             {
-                "file": "images/Flag.png",
-                "name": "IMAGE_FLAG",
+                "file": "images/big_explosion02.png",
+                "name": "IMAGE_BIG_EXPLOSION02",
                 "type": "png"
             },
             {
-                "file": "images/Explosion.png",
+                "file": "images/big_explosion01.png",
+                "name": "IMAGE_BIG_EXPLOSION01",
+                "type": "png"
+            },
+            {
+                "file": "images/explosion.png",
                 "name": "IMAGE_EXPLOSION",
+                "type": "png"
+            },
+            {
+                "file": "images/Flag.png",
+                "name": "IMAGE_FLAG",
                 "type": "png"
             },
             {
