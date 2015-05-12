@@ -9,6 +9,11 @@
     "resources": {
         "media": [
             {
+                "file": "images/Bolt.png",
+                "name": "IMAGE_BOLT",
+                "type": "png"
+            },
+            {
                 "file": "images/Mars.png",
                 "name": "IMAGE_MARS",
                 "type": "png"
@@ -66,11 +71,6 @@
             {
                 "file": "images/Explosion.png",
                 "name": "IMAGE_EXPLOSION",
-                "type": "png"
-            },
-            {
-                "file": "images/Bolt.png",
-                "name": "IMAGE_BOLT",
                 "type": "png"
             },
             {

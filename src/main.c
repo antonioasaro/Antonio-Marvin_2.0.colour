@@ -147,8 +147,10 @@ void clear_background()
 }
 
 void clear_animations() {
+#ifdef PBL_BW  // only defined on Aplite
     for (int i=0; i<FRAME_COUNT; i++) property_animation_destroy(bolt_animation[i]);
     property_animation_destroy(explosion_animation);
+#endif
 }
 
 void clear_fonts() {
@@ -204,7 +206,7 @@ void setup_marvin()
 {
 	marvin = bitmap_layer_create(GRect(-5, 56, IMAGE_WIDTH, IMAGE_HEIGHT));
 	bitmap_layer_set_bitmap(marvin, marvin01_image);
-	bitmap_layer_set_compositing_mode(marvin, GCompOpAnd);
+	bitmap_layer_set_compositing_mode(marvin, GCompOpOr);
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(marvin));
 	
 	marvin_frames[IMAGE_POS_NORMAL].duration = 50;
@@ -407,11 +409,11 @@ static void handle_timer(void *data)
 {
 	uint32_t cookie = (uint32_t) data;
 	static uint32_t new_position;
-
 	if(is_animating == false) return;
 	if(cookie == (uint32_t) IMAGE_POS_NORMAL) 
 	{
 		is_animating = false;
+		app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Updating Marvin");
 		update_marvin(cookie);
 		new_position = IMAGE_POS_NORMAL;
 		return;
@@ -595,6 +597,7 @@ void handle_deinit(void)
 int main(void)
 {
   	handle_init();
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 603, "Done init");
 	app_event_loop();
 	handle_deinit();
 }
