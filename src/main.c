@@ -213,7 +213,7 @@ void setup_explosion()
 void setup_marvin()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Setup Marvin");
-	marvin = bitmap_layer_create(GRect(-5, 56, IMAGE_WIDTH, IMAGE_HEIGHT));
+	marvin = bitmap_layer_create(GRect(-5, 58, IMAGE_WIDTH, IMAGE_HEIGHT));
 	bitmap_layer_set_bitmap(marvin, marvin01_image);
 #ifdef PBL_COLOR
 	bitmap_layer_set_compositing_mode(marvin, GCompOpSet);
