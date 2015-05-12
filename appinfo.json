@@ -14,6 +14,11 @@
                 "type": "png"
             },
             {
+                "file": "images/Explosion.png",
+                "name": "IMAGE_EXPLOSION",
+                "type": "png"
+            },
+            {
                 "file": "images/marvin04.png",
                 "name": "IMAGE_MARVIN04",
                 "type": "png"
@@ -37,11 +42,6 @@
                 "file": "images/marvin_icon.png",
                 "menuIcon": true,
                 "name": "IMAGE_MENU_ICON",
-                "type": "png"
-            },
-            {
-                "file": "images/Explosion.png",
-                "name": "IMAGE_EXPLOSION",
                 "type": "png"
             },
             {

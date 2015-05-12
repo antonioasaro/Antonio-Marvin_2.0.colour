@@ -15,7 +15,7 @@
 #define IMAGE_POS_DONE   6
 	
 #define FRAME_COUNT 12
-#define FRAME01 GRect(62,  68,  17, 17)     // anchor
+#define FRAME01 GRect(62,  68,  17, 17)     		// anchor
 #define FRAME02 GRect(80,  65,  17, 17)
 #define FRAME03 GRect(100, 63,  17, 17)
 #define FRAME04 GRect(110, 80,  17, 17)
@@ -26,7 +26,8 @@
 #define FRAME09 GRect(50,  95,  17, 17)
 #define FRAME10 GRect(51,  70,  17, 17)  
 #define FRAME11 GRect(75,  55,  17, 17) 
-#define FRAME12 GRect(80,  28,  17, 17)     // anchor
+#define FRAME12 GRect(80,  28,  17, 17)     		// anchor
+#define EXPLOSION_FRAME GRect(0,  -20,  140, 100)   	
 #define LASTFRAME FRAME12
 #define LASTINDEX 12-1
 #define BOLT_ANIMATION_DURATION 1500
@@ -82,6 +83,13 @@ typedef struct
 	uint32_t duration;
 } bolt_frame;
 bolt_frame bolt_frames[FRAME_COUNT];
+
+typedef struct
+{
+	GRect frame;
+	uint32_t duration;
+} explosion_frame;
+explosion_frame explosion_frames[1];
 
 typedef struct
 {
@@ -347,10 +355,17 @@ void setup_bolt_animation()
 	}
 }
 
+void setup_explosion_frames()
+{
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_explosion_frames");
+	double duration = 10;
+	explosion_frames[0].frame  = EXPLOSION_FRAME; explosion_frames[0].duration  = 25 * duration;
+}
+
 void setup_explosion_animation()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_explosion_animation");
-	explosion_animation = property_animation_create_layer_frame(bitmap_layer_get_layer(explosion), NULL, &bolt_frames[LASTINDEX].frame);
+	explosion_animation = property_animation_create_layer_frame(bitmap_layer_get_layer(explosion), NULL, &explosion_frames[0].frame);
 	animation_set_duration((Animation*) explosion_animation, 1000);
 	animation_set_delay((Animation*) explosion_animation, 0);
 	animation_set_curve((Animation*) explosion_animation, AnimationCurveLinear);
@@ -440,7 +455,7 @@ static void explosion_animation_started(Animation *animation, void *data)
 static void explosion_animation_stopped(Animation *animation, bool finished, void *data)
 {
 	layer_set_hidden(bitmap_layer_get_layer(explosion), true);	
-	animate_font();
+////	animate_font();
 }
 
 //// handle functions
@@ -621,6 +636,7 @@ void handle_init(void)
 	setup_explosion();
 	setup_bolt_frames();
 	setup_bolt_animation();
+	setup_explosion_frames();
 	setup_explosion_animation();
 }
 
