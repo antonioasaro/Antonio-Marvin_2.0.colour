@@ -9,6 +9,11 @@
     "resources": {
         "media": [
             {
+                "file": "images/marvin01.png",
+                "name": "IMAGE_MARVIN01",
+                "type": "png"
+            },
+            {
                 "file": "images/Bolt.png",
                 "name": "IMAGE_BOLT",
                 "type": "png"
@@ -71,11 +76,6 @@
             {
                 "file": "images/Explosion.png",
                 "name": "IMAGE_EXPLOSION",
-                "type": "png"
-            },
-            {
-                "file": "images/marvin01.png",
-                "name": "IMAGE_MARVIN01",
                 "type": "png"
             },
             {
