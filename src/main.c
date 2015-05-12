@@ -138,20 +138,32 @@ void clear_bolt()
 
 void clear_explosion()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_explosion");
 	bitmap_layer_destroy(explosion);
 }
 
 void clear_background()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_background");
 	bitmap_layer_destroy(earth);
 	bitmap_layer_destroy(flag);
 	bitmap_layer_destroy(mars);
 }
 
+void clear_bolt_animation() {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_bolt_animation");
+	for (int i=0; i<FRAME_COUNT; i++) property_animation_destroy(bolt_animation[i]);
+}
+
+void clear_explosion_animation() {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_explosion_animation");
+   	property_animation_destroy(explosion_animation);
+}
+
 void clear_animations() {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_animations");
-	for (int i=0; i<FRAME_COUNT; i++) property_animation_destroy(bolt_animation[i]);
-    property_animation_destroy(explosion_animation);
+	clear_bolt_animation(); 
+	clear_explosion_animation();
 }
 
 void clear_fonts() {
@@ -337,6 +349,7 @@ void setup_bolt_animation()
 
 void setup_explosion_animation()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_explosion_animation");
 	explosion_animation = property_animation_create_layer_frame(bitmap_layer_get_layer(explosion), NULL, &bolt_frames[LASTINDEX].frame);
 	animation_set_duration((Animation*) explosion_animation, 1000);
 	animation_set_delay((Animation*) explosion_animation, 0);
@@ -378,6 +391,7 @@ void update_marvin(int current_position)
 //// animate functions
 void animate_marvin()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "animation_marvin");
 	is_animating = true;
 	timer = app_timer_register(marvin_frames[IMAGE_POS_NORMAL].duration, handle_timer, (int *) IMAGE_POS_DRAW);
 }
@@ -391,16 +405,20 @@ void animate_font()
 void animate_bolt()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "Enter animation_bolt");
+	clear_bolt_animation();
+	setup_bolt_animation();
 	layer_set_hidden(bitmap_layer_get_layer(bolt), false);	
 	for(int x = 0; x < FRAME_COUNT - 1; x++)
 	{
-////		animation_schedule((Animation*) bolt_animation[x]);
+		animation_schedule((Animation*) bolt_animation[x]);
 	}
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 319, "Exit animation_bolt");
 }
 
 void animate_explosion()
 {
+	clear_explosion_animation();
+	setup_explosion_animation();
 	layer_set_hidden(bitmap_layer_get_layer(explosion), false);	
 	animation_schedule((Animation*) explosion_animation);
 }
