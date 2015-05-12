@@ -147,8 +147,10 @@ void clear_background()
 }
 
 void clear_animations() {
-////	for (int i=0; i<FRAME_COUNT; i++) property_animation_destroy(bolt_animation[i]);
-////    property_animation_destroy(explosion_animation);
+#ifndef PBL_COLOR
+	for (int i=0; i<FRAME_COUNT; i++) property_animation_destroy(bolt_animation[i]);
+    property_animation_destroy(explosion_animation);
+#endif
 }
 
 void clear_fonts() {
@@ -186,7 +188,11 @@ void setup_bolt()
 {
 	bolt = bitmap_layer_create(FRAME01);
 	bitmap_layer_set_bitmap(bolt, bolt_image);
+#ifdef PBL_COLOR
+	bitmap_layer_set_compositing_mode(bolt, GCompOpSet);
+#else
 	bitmap_layer_set_compositing_mode(bolt, GCompOpAnd);
+#endif
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(bolt));
 	layer_set_hidden(bitmap_layer_get_layer(bolt), true);	
 }
@@ -195,7 +201,11 @@ void setup_explosion()
 {
 	explosion = bitmap_layer_create(LASTFRAME);
 	bitmap_layer_set_bitmap(explosion, explosion_image);
+#ifdef PBL_COLOR
+	bitmap_layer_set_compositing_mode(explosion, GCompOpSet);
+#else
 	bitmap_layer_set_compositing_mode(explosion, GCompOpAnd);
+#endif
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(explosion));
 	layer_set_hidden(bitmap_layer_get_layer(explosion), true);	
 }
@@ -205,7 +215,11 @@ void setup_marvin()
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Setup Marvin");
 	marvin = bitmap_layer_create(GRect(-5, 56, IMAGE_WIDTH, IMAGE_HEIGHT));
 	bitmap_layer_set_bitmap(marvin, marvin01_image);
-////	bitmap_layer_set_compositing_mode(marvin, GCompOpAnd);
+#ifdef PBL_COLOR
+	bitmap_layer_set_compositing_mode(marvin, GCompOpSet);
+#else
+	bitmap_layer_set_compositing_mode(marvin, GCompOpAnd);
+#endif
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(marvin));
 	
 	marvin_frames[IMAGE_POS_NORMAL].duration = 50;
