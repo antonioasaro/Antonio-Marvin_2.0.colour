@@ -103,6 +103,7 @@ static void explosion_animation_stopped(Animation *animation, bool finished, voi
 //// clear functions
 void clear_gbitmap()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_gbitmap");
 	gbitmap_destroy(marvin01_image);
 	gbitmap_destroy(marvin02_image);
 	gbitmap_destroy(marvin03_image);
@@ -131,6 +132,7 @@ void clear_date()
 
 void clear_bolt()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_bolt");
 	bitmap_layer_destroy(bolt);
 }
 
@@ -147,10 +149,9 @@ void clear_background()
 }
 
 void clear_animations() {
-#ifndef PBL_COLOR
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_animations");
 	for (int i=0; i<FRAME_COUNT; i++) property_animation_destroy(bolt_animation[i]);
     property_animation_destroy(explosion_animation);
-#endif
 }
 
 void clear_fonts() {
@@ -159,6 +160,7 @@ void clear_fonts() {
 
 void clear_all()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_all");
 	clear_fonts();
 	clear_gbitmap();
 	clear_marvin();
@@ -173,6 +175,7 @@ void clear_all()
 //// setup functions
 void setup_gbitmap()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_gbitmap");
 	marvin01_image  = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN01);
 	marvin02_image  = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN02);
 	marvin03_image  = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN03);
@@ -186,6 +189,7 @@ void setup_gbitmap()
 
 void setup_bolt()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_bolt");
 	bolt = bitmap_layer_create(FRAME01);
 	bitmap_layer_set_bitmap(bolt, bolt_image);
 #ifdef PBL_COLOR
@@ -292,6 +296,7 @@ void setup_fonts()
 
 void setup_bolt_frames()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_bolt_frames");
 	double duration = 10;
 	bolt_frames[0].frame  = FRAME01; bolt_frames[0].duration  = 25 * duration;
 	bolt_frames[1].frame  = FRAME02; bolt_frames[1].duration  = 25 * duration;
@@ -309,6 +314,7 @@ void setup_bolt_frames()
 
 void setup_bolt_animation()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_bolt_animation");
 	int total_send_delay = 0;
 	for(int x = 0; x < FRAME_COUNT - 1; x++) //-1 because animate_bolt looks at the current frame and the next frame in the array
 	{
@@ -365,6 +371,7 @@ void update_date(struct tm *t)
 
 void update_marvin(int current_position)
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Updating Marvin");
 	bitmap_layer_set_bitmap(marvin, marvin_frames[current_position].image);
 }
 
@@ -383,11 +390,13 @@ void animate_font()
 
 void animate_bolt()
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "Enter animation_bolt");
 	layer_set_hidden(bitmap_layer_get_layer(bolt), false);	
 	for(int x = 0; x < FRAME_COUNT - 1; x++)
 	{
-		animation_schedule((Animation*) bolt_animation[x]);
+////		animation_schedule((Animation*) bolt_animation[x]);
 	}
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 319, "Exit animation_bolt");
 }
 
 void animate_explosion()
@@ -403,6 +412,7 @@ static void bolt_animation_started(Animation *animation, void *data)
 
 static void bolt_animation_stopped(Animation *animation, bool finished, void *data)
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "bolt_stopped");
 	layer_set_hidden(bitmap_layer_get_layer(bolt), true);	
 	animate_explosion();
 }
@@ -426,7 +436,6 @@ static void handle_timer(void *data)
 	if(cookie == (uint32_t) IMAGE_POS_NORMAL) 
 	{
 		is_animating = false;
-		app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Updating Marvin");
 		update_marvin(cookie);
 		new_position = IMAGE_POS_NORMAL;
 		return;
