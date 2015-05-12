@@ -180,7 +180,7 @@ void clear_all()
 	clear_date();
 	clear_bolt();
 	clear_explosion();
-	clear_animations();
+////	clear_animations();
 	clear_background();
 }
 
@@ -626,14 +626,16 @@ void handle_init(void)
 
 void handle_deinit(void) 
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 603, "deinit 1");
 	window_destroy(window);	
-	layer_destroy(window_layer);
+////	layer_destroy(window_layer);
 	clear_all();
 }
 
 //// main function
 int main(void)
 {
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 603, "Initing apps");
   	handle_init();
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 603, "Done init");
 	app_event_loop();

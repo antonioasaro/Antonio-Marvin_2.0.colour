@@ -9,6 +9,11 @@
     "resources": {
         "media": [
             {
+                "file": "images/Flag.png",
+                "name": "IMAGE_FLAG",
+                "type": "png"
+            },
+            {
                 "file": "images/marvin04.png",
                 "name": "IMAGE_MARVIN04",
                 "type": "png"
@@ -26,11 +31,6 @@
             {
                 "file": "images/marvin02.png",
                 "name": "IMAGE_MARVIN02",
-                "type": "png"
-            },
-            {
-                "file": "images/Flag.png",
-                "name": "IMAGE_FLAG",
                 "type": "png"
             },
             {
