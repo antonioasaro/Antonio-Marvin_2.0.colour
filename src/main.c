@@ -404,20 +404,18 @@ void animate_font()
 
 void animate_bolt()
 {
-	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "Enter animation_bolt");
-	clear_bolt_animation();
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "Enter animate_bolt");
 	setup_bolt_animation();
 	layer_set_hidden(bitmap_layer_get_layer(bolt), false);	
 	for(int x = 0; x < FRAME_COUNT - 1; x++)
 	{
 		animation_schedule((Animation*) bolt_animation[x]);
 	}
-	app_log(APP_LOG_LEVEL_INFO, "main.c", 319, "Exit animation_bolt");
 }
 
 void animate_explosion()
 {
-	clear_explosion_animation();
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "Enter animate_explosion");
 	setup_explosion_animation();
 	layer_set_hidden(bitmap_layer_get_layer(explosion), false);	
 	animation_schedule((Animation*) explosion_animation);
