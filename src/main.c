@@ -13,6 +13,13 @@
 #define IMAGE_POS_SHOOT  4
 #define IMAGE_POS_LOWER  5
 #define IMAGE_POS_DONE   6
+
+#define EXPLOSION_HIDDEN 0
+#define EXPLOSION_SMALL  1
+#define EXPLOSION_MEDIUM 2
+#define EXPLOSION_LARGE  3
+#define EXPLOSION_COUNT  4	
+//#define EXPLOSION_FRAME GRect(0,  -20,  140, 100)   	
 	
 #define FRAME_COUNT 12
 #define FRAME01 GRect(62,  68,  17, 17)     		// anchor
@@ -27,8 +34,6 @@
 #define FRAME10 GRect(51,  70,  17, 17)  
 #define FRAME11 GRect(75,  55,  17, 17) 
 #define FRAME12 GRect(80,  28,  17, 17)     		// anchor
-#define EXPLOSION_FRAME GRect(80,  28,  17, 17)   	
-//#define EXPLOSION_FRAME GRect(0,  -20,  140, 100)   	
 #define LASTFRAME FRAME12
 #define LASTINDEX 12-1
 #define BOLT_ANIMATION_DURATION 1500
@@ -66,13 +71,16 @@ static GBitmap *marvin01_image;
 static GBitmap *marvin02_image;
 static GBitmap *marvin03_image;
 static GBitmap *marvin04_image;
+static GBitmap *explosion01_image;
+static GBitmap *explosion02_image;
+static GBitmap *explosion03_image;
+static GBitmap *explosion04_image;
 static GBitmap *bolt_image;
-static GBitmap *explosion_image;
 static GBitmap *earth_image;
 static GBitmap *flag_image;
 static GBitmap *mars_image;
 static PropertyAnimation *bolt_animation[FRAME_COUNT];
-static PropertyAnimation *explosion_animation;
+//// static PropertyAnimation *explosion_animation;
 static TextLayer *time_text;
 static TextLayer *date_text;
 static GFont fonts[6];   
@@ -87,10 +95,10 @@ bolt_frame bolt_frames[FRAME_COUNT];
 
 typedef struct
 {
-	GRect frame;
-	uint32_t duration;
+	GBitmap *image;
+	int duration;
 } explosion_frame;
-explosion_frame explosion_frames[1];
+explosion_frame explosion_frames[EXPLOSION_COUNT];
 
 typedef struct
 {
@@ -105,8 +113,8 @@ marvin_frame marvin_frames[IMAGE_COUNT];
 static void handle_timer(void *data);
 static void bolt_animation_started(Animation *animation, void *data);
 static void bolt_animation_stopped(Animation *animation, bool finished, void *data);
-static void explosion_animation_started(Animation *animation, void *data);
-static void explosion_animation_stopped(Animation *animation, bool finished, void *data);
+//// static void explosion_animation_started(Animation *animation, void *data);
+//// static void explosion_animation_stopped(Animation *animation, bool finished, void *data);
 
 
 //// clear functions
@@ -117,8 +125,11 @@ void clear_gbitmap()
 	gbitmap_destroy(marvin02_image);
 	gbitmap_destroy(marvin03_image);
 	gbitmap_destroy(marvin04_image);
+	gbitmap_destroy(explosion01_image);
+	gbitmap_destroy(explosion02_image);
+	gbitmap_destroy(explosion03_image);
+	gbitmap_destroy(explosion04_image);
 	gbitmap_destroy(bolt_image);
-	gbitmap_destroy(explosion_image);
 	gbitmap_destroy(earth_image);
 	gbitmap_destroy(flag_image);
 	gbitmap_destroy(mars_image); 
@@ -127,6 +138,11 @@ void clear_gbitmap()
 void clear_marvin()
 {
 	bitmap_layer_destroy(marvin);
+}
+
+void clear_explosion()
+{
+	bitmap_layer_destroy(explosion);
 }
 
 void clear_time()
@@ -145,12 +161,6 @@ void clear_bolt()
 	bitmap_layer_destroy(bolt);
 }
 
-void clear_explosion()
-{
-	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_explosion");
-	bitmap_layer_destroy(explosion);
-}
-
 void clear_background()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_background");
@@ -164,15 +174,15 @@ void clear_bolt_animation() {
 	for (int i=0; i<FRAME_COUNT; i++) property_animation_destroy(bolt_animation[i]);
 }
 
-void clear_explosion_animation() {
-	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_explosion_animation");
-   	property_animation_destroy(explosion_animation);
-}
+//// void clear_explosion_animation() {
+////	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_explosion_animation");
+////   	property_animation_destroy(explosion_animation);
+////}
 
 void clear_animations() {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_animations");
 	clear_bolt_animation(); 
-	clear_explosion_animation();
+////	clear_explosion_animation();
 }
 
 void clear_fonts() {
@@ -185,10 +195,10 @@ void clear_all()
 	clear_fonts();
 	clear_gbitmap();
 	clear_marvin();
+	clear_explosion();
 	clear_time();
 	clear_date();
 	clear_bolt();
-	clear_explosion();
 ////	clear_animations();
 	clear_background();
 }
@@ -201,11 +211,14 @@ void setup_gbitmap()
 	marvin02_image    = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN02);
 	marvin03_image    = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN03);
 	marvin04_image    = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARVIN04);
+	explosion01_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXPLOSION01);
+	explosion02_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXPLOSION02);
+	explosion03_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXPLOSION03);
+	explosion04_image = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXPLOSION04);
 	bolt_image        = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_BOLT);
 	earth_image       = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EARTH);
 	flag_image        = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_FLAG);
 	mars_image        = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_MARS);
-	explosion_image   = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXPLOSION);
 }
 
 void setup_bolt()
@@ -224,15 +237,21 @@ void setup_bolt()
 
 void setup_explosion()
 {
-	explosion = bitmap_layer_create(LASTFRAME);
-	bitmap_layer_set_bitmap(explosion, explosion_image);
-#ifdef PBL_COLOR
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Setup explosion");
+	explosion = bitmap_layer_create(GRect(0, 0, 140, 100));
+	bitmap_layer_set_bitmap(explosion, explosion01_image);
 	bitmap_layer_set_compositing_mode(explosion, GCompOpSet);
-#else
-	bitmap_layer_set_compositing_mode(explosion, GCompOpAnd);
-#endif
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(explosion));
-	layer_set_hidden(bitmap_layer_get_layer(explosion), true);	
+////	layer_set_hidden(bitmap_layer_get_layer(explosion), true);	
+	
+	explosion_frames[EXPLOSION_HIDDEN].duration = 50;
+	explosion_frames[EXPLOSION_SMALL].duration 	= 50;
+	explosion_frames[EXPLOSION_MEDIUM].duration	= 50;
+	explosion_frames[EXPLOSION_LARGE].duration  = 50;
+	explosion_frames[EXPLOSION_HIDDEN].image 	= explosion01_image; 
+	explosion_frames[EXPLOSION_SMALL].image 	= explosion02_image; 
+	explosion_frames[EXPLOSION_MEDIUM].image  	= explosion03_image; 
+	explosion_frames[EXPLOSION_LARGE].image	 	= explosion04_image; 
 }
 
 void setup_marvin()
@@ -240,11 +259,7 @@ void setup_marvin()
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Setup Marvin");
 	marvin = bitmap_layer_create(GRect(0, 58, IMAGE_WIDTH, IMAGE_HEIGHT));
 	bitmap_layer_set_bitmap(marvin, marvin01_image);
-#ifdef PBL_COLOR
 	bitmap_layer_set_compositing_mode(marvin, GCompOpSet);
-#else
-	bitmap_layer_set_compositing_mode(marvin, GCompOpAnd);
-#endif
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(marvin));
 	
 	marvin_frames[IMAGE_POS_NORMAL].duration = 50;
@@ -356,6 +371,7 @@ void setup_bolt_animation()
 	}
 }
 
+/*
 void setup_explosion_frames()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_explosion_frames");
@@ -373,9 +389,10 @@ void setup_explosion_animation()
 	animation_set_handlers((Animation*) explosion_animation, (AnimationHandlers) {
  		.started = (AnimationStartedHandler) explosion_animation_started,
  		.stopped = (AnimationStoppedHandler) explosion_animation_stopped,
-    }, NULL /* callback data */);
+    }, NULL);
 }
-
+*/
+	
 //// update functions
 void update_time(struct tm *t)
 {
@@ -398,10 +415,17 @@ void update_date(struct tm *t)
 	text_layer_set_text(date_text, dateText);
 }
 
+void update_explosion(int current_position)
+{
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Updating Explosion");
+	bitmap_layer_set_bitmap(explosion, explosion_frames[0].image);
+}
+
 void update_marvin(int current_position)
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Updating Marvin");
 	bitmap_layer_set_bitmap(marvin, marvin_frames[current_position].image);
+	update_explosion(current_position);
 }
 
 //// animate functions
@@ -411,6 +435,14 @@ void animate_marvin()
 	is_animating = true;
 	timer = app_timer_register(marvin_frames[IMAGE_POS_NORMAL].duration, handle_timer, (int *) IMAGE_POS_DRAW);
 }
+
+void animate_explosion()
+{
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "animation_explosion");
+//	is_animating = true;
+//	timer = app_timer_register(marvin_frames[IMAGE_POS_NORMAL].duration, handle_timer, (int *) IMAGE_POS_DRAW);
+}
+
 
 void animate_font()
 {
@@ -429,6 +461,7 @@ void animate_bolt()
 	}
 }
 
+/*
 void animate_explosion()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "Enter animate_explosion");
@@ -436,6 +469,7 @@ void animate_explosion()
 	layer_set_hidden(bitmap_layer_get_layer(explosion), false);	
 	animation_schedule((Animation*) explosion_animation);
 }
+*/
 
 //// started + stopped functions
 static void bolt_animation_started(Animation *animation, void *data)
@@ -449,6 +483,7 @@ static void bolt_animation_stopped(Animation *animation, bool finished, void *da
 	animate_explosion();
 }
 
+/*
 static void explosion_animation_started(Animation *animation, void *data)
 {
 }
@@ -458,6 +493,7 @@ static void explosion_animation_stopped(Animation *animation, bool finished, voi
 	layer_set_hidden(bitmap_layer_get_layer(explosion), true);	
 ////	animate_font();
 }
+*/
 
 //// handle functions
 static void handle_timer(void *data)
@@ -637,8 +673,8 @@ void handle_init(void)
 	setup_explosion();
 	setup_bolt_frames();
 	setup_bolt_animation();
-	setup_explosion_frames();
-	setup_explosion_animation();
+////	setup_explosion_frames();
+////	setup_explosion_animation();
 }
 
 void handle_deinit(void) 

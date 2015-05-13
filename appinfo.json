@@ -9,18 +9,28 @@
     "resources": {
         "media": [
             {
-                "file": "images/big_explosion02.png",
-                "name": "IMAGE_BIG_EXPLOSION02",
+                "file": "images/explosion04.png",
+                "name": "IMAGE_EXPLOSION04",
                 "type": "png"
             },
             {
-                "file": "images/big_explosion01.png",
-                "name": "IMAGE_BIG_EXPLOSION01",
+                "file": "images/explosion03.png",
+                "name": "IMAGE_EXPLOSION03",
                 "type": "png"
             },
             {
-                "file": "images/explosion.png",
-                "name": "IMAGE_EXPLOSION",
+                "file": "images/explosion02.png",
+                "name": "IMAGE_EXPLOSION02",
+                "type": "png"
+            },
+            {
+                "file": "images/explosion01.png",
+                "name": "IMAGE_EXPLOSION01",
+                "type": "png"
+            },
+            {
+                "file": "images/Mars.png",
+                "name": "IMAGE_MARS",
                 "type": "png"
             },
             {
@@ -52,11 +62,6 @@
                 "file": "images/marvin_icon.png",
                 "menuIcon": true,
                 "name": "IMAGE_MENU_ICON",
-                "type": "png"
-            },
-            {
-                "file": "images/Mars.png",
-                "name": "IMAGE_MARS",
                 "type": "png"
             },
             {
