@@ -19,7 +19,7 @@
 #define EXPLOSION_MEDIUM 2
 #define EXPLOSION_LARGE  3
 #define EXPLOSION_COUNT  4	
-//#define EXPLOSION_FRAME GRect(0,  -20,  140, 100)   	
+#define EXPLOSION_OFFSET 90
 	
 #define FRAME_COUNT 12
 #define FRAME01 GRect(62,  68,  17, 17)     		// anchor
@@ -37,17 +37,6 @@
 #define LASTFRAME FRAME12
 #define LASTINDEX 12-1
 #define BOLT_ANIMATION_DURATION 1500
-	
-#define SHRINK_FONT01 90
-#define SHRINK_FONT02 91
-#define SHRINK_FONT03 92
-#define SHRINK_FONT04 93
-#define SHRINK_FONT05 94
-#define EXPAND_FONT01 95
-#define EXPAND_FONT02 96
-#define EXPAND_FONT03 97
-#define EXPAND_FONT04 98
-#define NORMAL_FONT   99
 
 #define TIME_FRAME_PADDING 5
 #define TIME_FRAME_Y 5 + TIME_FRAME_PADDING //61 (44 + 17) is the lowest possible point of the moving bolt animation and the padding for the top side
@@ -80,7 +69,6 @@ static GBitmap *earth_image;
 static GBitmap *flag_image;
 static GBitmap *mars_image;
 static PropertyAnimation *bolt_animation[FRAME_COUNT];
-//// static PropertyAnimation *explosion_animation;
 static TextLayer *time_text;
 static TextLayer *date_text;
 static GFont fonts[6];   
@@ -113,8 +101,6 @@ marvin_frame marvin_frames[IMAGE_COUNT];
 static void handle_timer(void *data);
 static void bolt_animation_started(Animation *animation, void *data);
 static void bolt_animation_stopped(Animation *animation, bool finished, void *data);
-//// static void explosion_animation_started(Animation *animation, void *data);
-//// static void explosion_animation_stopped(Animation *animation, bool finished, void *data);
 
 
 //// clear functions
@@ -174,15 +160,9 @@ void clear_bolt_animation() {
 	for (int i=0; i<FRAME_COUNT; i++) property_animation_destroy(bolt_animation[i]);
 }
 
-//// void clear_explosion_animation() {
-////	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_explosion_animation");
-////   	property_animation_destroy(explosion_animation);
-////}
-
 void clear_animations() {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "clear_animations");
 	clear_bolt_animation(); 
-////	clear_explosion_animation();
 }
 
 void clear_fonts() {
@@ -238,16 +218,16 @@ void setup_bolt()
 void setup_explosion()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Setup explosion");
-	explosion = bitmap_layer_create(GRect(0, 0, 140, 100));
+	explosion = bitmap_layer_create(GRect(0, -20, 140, 100));
 	bitmap_layer_set_bitmap(explosion, explosion01_image);
 	bitmap_layer_set_compositing_mode(explosion, GCompOpSet);
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(explosion));
 ////	layer_set_hidden(bitmap_layer_get_layer(explosion), true);	
 	
 	explosion_frames[EXPLOSION_HIDDEN].duration = 50;
-	explosion_frames[EXPLOSION_SMALL].duration 	= 50;
-	explosion_frames[EXPLOSION_MEDIUM].duration	= 50;
-	explosion_frames[EXPLOSION_LARGE].duration  = 50;
+	explosion_frames[EXPLOSION_SMALL].duration 	= 100;
+	explosion_frames[EXPLOSION_MEDIUM].duration	= 100;
+	explosion_frames[EXPLOSION_LARGE].duration  = 500;
 	explosion_frames[EXPLOSION_HIDDEN].image 	= explosion01_image; 
 	explosion_frames[EXPLOSION_SMALL].image 	= explosion02_image; 
 	explosion_frames[EXPLOSION_MEDIUM].image  	= explosion03_image; 
@@ -371,28 +351,7 @@ void setup_bolt_animation()
 	}
 }
 
-/*
-void setup_explosion_frames()
-{
-	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_explosion_frames");
-	double duration = 10;
-	explosion_frames[0].frame  = EXPLOSION_FRAME; explosion_frames[0].duration  = 25 * duration;
-}
 
-void setup_explosion_animation()
-{
-	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "setup_explosion_animation");
-	explosion_animation = property_animation_create_layer_frame(bitmap_layer_get_layer(explosion), NULL, &explosion_frames[0].frame);
-	animation_set_duration((Animation*) explosion_animation, 1000);
-	animation_set_delay((Animation*) explosion_animation, 0);
-	animation_set_curve((Animation*) explosion_animation, AnimationCurveLinear);
-	animation_set_handlers((Animation*) explosion_animation, (AnimationHandlers) {
- 		.started = (AnimationStartedHandler) explosion_animation_started,
- 		.stopped = (AnimationStoppedHandler) explosion_animation_stopped,
-    }, NULL);
-}
-*/
-	
 //// update functions
 void update_time(struct tm *t)
 {
@@ -418,15 +377,15 @@ void update_date(struct tm *t)
 void update_explosion(int current_position)
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Updating Explosion");
-	bitmap_layer_set_bitmap(explosion, explosion_frames[0].image);
+	bitmap_layer_set_bitmap(explosion, explosion_frames[current_position].image);
 }
 
 void update_marvin(int current_position)
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Updating Marvin");
 	bitmap_layer_set_bitmap(marvin, marvin_frames[current_position].image);
-	update_explosion(current_position);
 }
+
 
 //// animate functions
 void animate_marvin()
@@ -439,15 +398,8 @@ void animate_marvin()
 void animate_explosion()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "animation_explosion");
-//	is_animating = true;
-//	timer = app_timer_register(marvin_frames[IMAGE_POS_NORMAL].duration, handle_timer, (int *) IMAGE_POS_DRAW);
-}
-
-
-void animate_font()
-{
 	is_animating = true;
-	timer = app_timer_register(100, &handle_timer, (int *) SHRINK_FONT01);
+	timer = app_timer_register(explosion_frames[EXPLOSION_HIDDEN].duration, handle_timer, (int *) (EXPLOSION_OFFSET + EXPLOSION_SMALL));
 }
 
 void animate_bolt()
@@ -461,16 +413,6 @@ void animate_bolt()
 	}
 }
 
-/*
-void animate_explosion()
-{
-	app_log(APP_LOG_LEVEL_INFO, "main.c", 385, "Enter animate_explosion");
-	setup_explosion_animation();
-	layer_set_hidden(bitmap_layer_get_layer(explosion), false);	
-	animation_schedule((Animation*) explosion_animation);
-}
-*/
-
 //// started + stopped functions
 static void bolt_animation_started(Animation *animation, void *data)
 {
@@ -483,17 +425,6 @@ static void bolt_animation_stopped(Animation *animation, bool finished, void *da
 	animate_explosion();
 }
 
-/*
-static void explosion_animation_started(Animation *animation, void *data)
-{
-}
-
-static void explosion_animation_stopped(Animation *animation, bool finished, void *data)
-{
-	layer_set_hidden(bitmap_layer_get_layer(explosion), true);	
-////	animate_font();
-}
-*/
 
 //// handle functions
 static void handle_timer(void *data)
@@ -551,76 +482,36 @@ static void handle_timer(void *data)
 		timer = app_timer_register(marvin_frames[cookie].duration, &handle_timer, (void *) new_position);
 		return;
 	}
-	else if (cookie == (uint32_t) SHRINK_FONT01) 
+	else if (cookie == (uint32_t) (EXPLOSION_OFFSET + EXPLOSION_SMALL)) 
 	{
- 		text_layer_set_font(time_text, fonts[4]);
-		text_layer_set_font(date_text, fonts[4]);
-		timer = app_timer_register(50, handle_timer, (int *) SHRINK_FONT02);
+		update_explosion(cookie - EXPLOSION_OFFSET);
+		new_position = EXPLOSION_OFFSET + EXPLOSION_MEDIUM;
+		timer = app_timer_register(explosion_frames[cookie - EXPLOSION_OFFSET].duration, &handle_timer, (void *) new_position);
 		return;
 	}
-	else if (cookie == (uint32_t) SHRINK_FONT02) 
+	else if (cookie == (uint32_t) (EXPLOSION_OFFSET + EXPLOSION_MEDIUM)) 
 	{
- 		text_layer_set_font(time_text, fonts[3]);
-		text_layer_set_font(date_text, fonts[3]);
- 	    timer = app_timer_register(50, handle_timer, (int *) SHRINK_FONT03);
+		update_explosion(cookie - EXPLOSION_OFFSET);
+		new_position = EXPLOSION_OFFSET + EXPLOSION_LARGE;
+		timer = app_timer_register(explosion_frames[cookie - EXPLOSION_OFFSET].duration, &handle_timer, (void *) new_position);
 		return;
 	}
-	else if (cookie == (uint32_t) SHRINK_FONT03) 
+	else if (cookie == (uint32_t) (EXPLOSION_OFFSET + EXPLOSION_LARGE)) 
 	{
- 		text_layer_set_font(time_text, fonts[2]);
-		text_layer_set_font(date_text, fonts[2]);
- 	    timer = app_timer_register(50, handle_timer, (int *) SHRINK_FONT04);
+		text_layer_set_text(time_text, "");
+		text_layer_set_text(date_text, "");
+		update_explosion(cookie - EXPLOSION_OFFSET);
+		new_position = EXPLOSION_OFFSET + EXPLOSION_HIDDEN;
+		timer = app_timer_register(explosion_frames[cookie - EXPLOSION_OFFSET].duration, &handle_timer, (void *) new_position);
 		return;
 	}
-	else if (cookie == (uint32_t) SHRINK_FONT04) 
+	else if (cookie == (uint32_t) (EXPLOSION_OFFSET + EXPLOSION_HIDDEN)) 
 	{
- 		text_layer_set_font(time_text, fonts[1]);
-		text_layer_set_font(date_text, fonts[1]);
- 	    timer = app_timer_register(50, handle_timer, (int *) SHRINK_FONT05);
-		return;
-	}
-	else if (cookie == (uint32_t) SHRINK_FONT05) 
-	{
- 		text_layer_set_font(time_text, fonts[0]);
-		text_layer_set_font(date_text, fonts[0]);
- 	    timer = app_timer_register(1000, handle_timer, (int *) EXPAND_FONT01);
-		return;
-	}
-	else if (cookie == (uint32_t) EXPAND_FONT01) 
-	{
- 		text_layer_set_font(time_text, fonts[1]);
-		text_layer_set_font(date_text, fonts[1]);
- 	    app_timer_register(50, handle_timer, (int *) EXPAND_FONT02);
-		return;
-	}
-	else if (cookie == (uint32_t) EXPAND_FONT02) 
-	{
- 		text_layer_set_font(time_text, fonts[2]);
-		text_layer_set_font(date_text, fonts[2]);
- 	    timer = app_timer_register(50, handle_timer, (int *) EXPAND_FONT03);
-		return;
-	}
-	else if (cookie == (uint32_t) EXPAND_FONT03) 
-	{
- 		text_layer_set_font(time_text, fonts[3]);
-		text_layer_set_font(date_text, fonts[3]);
- 	    timer = app_timer_register(50, handle_timer, (int *) EXPAND_FONT04);
-		return;
-	}
-	else if (cookie == (uint32_t) EXPAND_FONT04) 
-	{
- 		text_layer_set_font(time_text, fonts[4]);
-		text_layer_set_font(date_text, fonts[4]);
- 	    timer = app_timer_register(50, handle_timer, (int *) NORMAL_FONT);
-		return;
-	}
-	else if (cookie == (uint32_t) NORMAL_FONT) 
-	{
- 		text_layer_set_font(time_text, fonts[5]);
-		text_layer_set_font(date_text, fonts[5]);
+		update_explosion(cookie - EXPLOSION_OFFSET);
 		is_animating = false;
 		return;
 	}
+
 }
 
 static void handle_second_tick(struct tm *t, TimeUnits units_changed)
@@ -635,7 +526,7 @@ static void handle_second_tick(struct tm *t, TimeUnits units_changed)
 	}
 
 	bool show = false;
-	if(seconds == 54)    //// try to catch min change during shrink/expand animation
+	if(seconds == 56)    //// try to catch min change during shrink/expand animation
 	{
 		show = true;
 		int show_interval = 1;   //// Interval of animation - e.g. 5 min;
@@ -673,17 +564,15 @@ void handle_init(void)
 	setup_explosion();
 	setup_bolt_frames();
 	setup_bolt_animation();
-////	setup_explosion_frames();
-////	setup_explosion_animation();
 }
 
 void handle_deinit(void) 
 {
-	app_log(APP_LOG_LEVEL_INFO, "main.c", 603, "deinit 1");
+	app_log(APP_LOG_LEVEL_INFO, "main.c", 603, "Deinit");
 	window_destroy(window);	
-////	layer_destroy(window_layer);
 	clear_all();
 }
+
 
 //// main function
 int main(void)

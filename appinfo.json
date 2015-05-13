@@ -9,6 +9,11 @@
     "resources": {
         "media": [
             {
+                "file": "images/explosion01.png",
+                "name": "IMAGE_EXPLOSION01",
+                "type": "png"
+            },
+            {
                 "file": "images/explosion04.png",
                 "name": "IMAGE_EXPLOSION04",
                 "type": "png"
@@ -21,11 +26,6 @@
             {
                 "file": "images/explosion02.png",
                 "name": "IMAGE_EXPLOSION02",
-                "type": "png"
-            },
-            {
-                "file": "images/explosion01.png",
-                "name": "IMAGE_EXPLOSION01",
                 "type": "png"
             },
             {
