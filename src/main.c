@@ -226,8 +226,8 @@ void setup_explosion()
 	
 	explosion_frames[EXPLOSION_HIDDEN].duration = 50;
 	explosion_frames[EXPLOSION_SMALL].duration 	= 100;
-	explosion_frames[EXPLOSION_MEDIUM].duration	= 100;
-	explosion_frames[EXPLOSION_LARGE].duration  = 500;
+	explosion_frames[EXPLOSION_MEDIUM].duration	= 150;
+	explosion_frames[EXPLOSION_LARGE].duration  = 750;
 	explosion_frames[EXPLOSION_HIDDEN].image 	= explosion01_image; 
 	explosion_frames[EXPLOSION_SMALL].image 	= explosion02_image; 
 	explosion_frames[EXPLOSION_MEDIUM].image  	= explosion03_image; 
@@ -498,8 +498,8 @@ static void handle_timer(void *data)
 	}
 	else if (cookie == (uint32_t) (EXPLOSION_OFFSET + EXPLOSION_LARGE)) 
 	{
-		text_layer_set_text(time_text, "");
-		text_layer_set_text(date_text, "");
+		text_layer_set_font(time_text, fonts[0]);
+		text_layer_set_font(date_text, fonts[0]);
 		update_explosion(cookie - EXPLOSION_OFFSET);
 		new_position = EXPLOSION_OFFSET + EXPLOSION_HIDDEN;
 		timer = app_timer_register(explosion_frames[cookie - EXPLOSION_OFFSET].duration, &handle_timer, (void *) new_position);
@@ -507,6 +507,8 @@ static void handle_timer(void *data)
 	}
 	else if (cookie == (uint32_t) (EXPLOSION_OFFSET + EXPLOSION_HIDDEN)) 
 	{
+		text_layer_set_font(time_text, fonts[5]);
+		text_layer_set_font(date_text, fonts[5]);
 		update_explosion(cookie - EXPLOSION_OFFSET);
 		is_animating = false;
 		return;
