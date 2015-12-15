@@ -1,6 +1,13 @@
 #include <pebble.h>
 #include "app_options.h"
 
+#ifdef PBL_ROUND
+#define XOFF 5
+#define YOFF 15
+#else
+#define XOFF 0
+#define YOFF 0 
+#endif
 
 //// defines 
 #define IMAGE_COUNT 7
@@ -22,18 +29,18 @@
 #define EXPLOSION_OFFSET 90
 	
 #define FRAME_COUNT 12
-#define FRAME01 GRect(62,  68,  17, 17)     		// anchor
-#define FRAME02 GRect(80,  65,  17, 17)
-#define FRAME03 GRect(100, 63,  17, 17)
-#define FRAME04 GRect(110, 80,  17, 17)
-#define FRAME05 GRect(112, 100, 17, 17)
-#define FRAME06 GRect(99,  108, 17, 17)
-#define FRAME07 GRect(80,  110, 17, 17)
-#define FRAME08 GRect(60,  107, 17, 17)
-#define FRAME09 GRect(50,  95,  17, 17)
-#define FRAME10 GRect(51,  70,  17, 17)  
-#define FRAME11 GRect(75,  55,  17, 17) 
-#define FRAME12 GRect(80,  28,  17, 17)     		// anchor
+#define FRAME01 GRect(62+XOFF,  68+YOFF,  17, 17)     		// anchor
+#define FRAME02 GRect(80+XOFF,  65+YOFF,  17, 17)
+#define FRAME03 GRect(100+XOFF, 63+YOFF,  17, 17)
+#define FRAME04 GRect(110+XOFF, 80+YOFF,  17, 17)
+#define FRAME05 GRect(112+XOFF, 100+YOFF, 17, 17)
+#define FRAME06 GRect(99+XOFF,  108+YOFF, 17, 17)
+#define FRAME07 GRect(80+XOFF,  110+YOFF, 17, 17)
+#define FRAME08 GRect(60+XOFF,  107+YOFF, 17, 17)
+#define FRAME09 GRect(50+XOFF,  95+YOFF,  17, 17)
+#define FRAME10 GRect(51+XOFF,  70+YOFF,  17, 17)  
+#define FRAME11 GRect(75+XOFF,  55+YOFF,  17, 17) 
+#define FRAME12 GRect(80+XOFF,  28+YOFF,  17, 17)     		// anchor
 #define LASTFRAME FRAME12
 #define LASTINDEX 12-1
 #define BOLT_ANIMATION_DURATION 1500
@@ -41,7 +48,7 @@
 #define TIME_FRAME_PADDING 5
 #define TIME_FRAME_Y 5 + TIME_FRAME_PADDING //61 (44 + 17) is the lowest possible point of the moving bolt animation and the padding for the top side
 #define TIME_FRAME_WIDTH SCREEN_WIDTH - (IMAGE_WIDTH / 2) //the padding for the right/left side
-#define TIME_FRAME_HEIGHT 30	
+#define TIME_FRAME_HEIGHT 30
 
 // variables
 Window *window;
@@ -218,7 +225,7 @@ void setup_bolt()
 void setup_explosion()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Setup explosion");
-	explosion = bitmap_layer_create(GRect(0, -20, 140, 100));
+	explosion = bitmap_layer_create(GRect(0+XOFF, -20+YOFF, 140, 100));
 	bitmap_layer_set_bitmap(explosion, explosion01_image);
 	bitmap_layer_set_compositing_mode(explosion, GCompOpSet);
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(explosion));
@@ -237,7 +244,7 @@ void setup_explosion()
 void setup_marvin()
 {
 	app_log(APP_LOG_LEVEL_INFO, "main.c", 416, "Setup Marvin");
-	marvin = bitmap_layer_create(GRect(0, 58, IMAGE_WIDTH, IMAGE_HEIGHT));
+	marvin = bitmap_layer_create(GRect(0+XOFF, 58+YOFF, IMAGE_WIDTH, IMAGE_HEIGHT));
 	bitmap_layer_set_bitmap(marvin, marvin01_image);
 	bitmap_layer_set_compositing_mode(marvin, GCompOpSet);
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(marvin));
@@ -260,7 +267,7 @@ void setup_marvin()
 
 void setup_time()
 {
-  	time_text = text_layer_create(GRect((IMAGE_WIDTH / 2), TIME_FRAME_Y, TIME_FRAME_WIDTH, TIME_FRAME_HEIGHT));
+  	time_text = text_layer_create(GRect((IMAGE_WIDTH / 2)+XOFF, TIME_FRAME_Y+YOFF, TIME_FRAME_WIDTH, TIME_FRAME_HEIGHT));
 	text_layer_set_text_color(time_text, GColorBlack);
   	text_layer_set_background_color(time_text, GColorClear);
 	text_layer_set_text_alignment(time_text, GTextAlignmentCenter);
@@ -270,7 +277,7 @@ void setup_time()
 
 void setup_date()
 {
-  	date_text = text_layer_create(GRect((IMAGE_WIDTH / 2)-10, TIME_FRAME_Y + TIME_FRAME_HEIGHT, TIME_FRAME_WIDTH+20, TIME_FRAME_HEIGHT));
+  	date_text = text_layer_create(GRect((IMAGE_WIDTH / 2)-10+XOFF, TIME_FRAME_Y+YOFF + TIME_FRAME_HEIGHT, TIME_FRAME_WIDTH+20, TIME_FRAME_HEIGHT));
   	text_layer_set_text_color(date_text, GColorBlack);
   	text_layer_set_background_color(date_text, GColorClear);
 	text_layer_set_text_alignment(date_text, GTextAlignmentCenter);
@@ -280,16 +287,16 @@ void setup_date()
 
 void setup_background()
 {
-	earth = bitmap_layer_create(GRect(4, 4, 32, 32));
+	earth = bitmap_layer_create(GRect(4+XOFF, 4+YOFF, 32, 32));
 	bitmap_layer_set_bitmap(earth, earth_image);
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(earth));
 	layer_set_hidden(bitmap_layer_get_layer(earth), true);	
 
-	flag = bitmap_layer_create(GRect(75, (SCREEN_HEIGHT - 90), 40, 60));
+	flag = bitmap_layer_create(GRect(75+XOFF, (SCREEN_HEIGHT - 90)+YOFF, 40, 60));
 	bitmap_layer_set_bitmap(flag, flag_image);
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(flag));
 
-	mars = bitmap_layer_create(GRect(0, (SCREEN_HEIGHT - 40), SCREEN_WIDTH, 40));
+	mars = bitmap_layer_create(GRect(0+XOFF, (SCREEN_HEIGHT - 40)+YOFF, SCREEN_WIDTH, 40));
 	bitmap_layer_set_bitmap(mars, mars_image);
 	layer_add_child(window_get_root_layer(window),  bitmap_layer_get_layer(mars));
 }

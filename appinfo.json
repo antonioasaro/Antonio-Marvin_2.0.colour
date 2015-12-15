@@ -109,11 +109,12 @@
     "sdkVersion": "3",
     "shortName": "ANTONIO-MARVIN_2.0.COLOUR",
     "targetPlatforms": [
-        "basalt"
+        "basalt",
+        "chalk"
     ],
     "uuid": "5be48544-b876-48c2-bd53-bec519358d77",
-    "versionLabel": "1.0",
+    "versionLabel": "1.2",
     "watchapp": {
-        "watchface": false
+        "watchface": true
     }
 }
